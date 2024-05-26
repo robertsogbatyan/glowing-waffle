@@ -53,6 +53,10 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ![Initial design](./initial-design.png)
 
+## Clients
+
+Clients are configured for a scenario when most of the APIs have the same interfaces(mainly CRUD) and also need similar manipulations(e.g. Authorization header) in interceptors. So we can create fully functional client by just extending one of the base clients and just passing the API url and add additional functionality if needed.
+
 ## Consistency in code style
 
 VSCode Extensions
