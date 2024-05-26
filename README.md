@@ -31,6 +31,10 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### `npm run eject`
 
+### `npm test`
+
+Format all files according to consistency rules described below
+
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
 If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
@@ -48,3 +52,91 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ## Initial Design
 
 ![Initial design](./initial-design.png)
+
+## Consistency in code style
+
+VSCode Extensions
+[ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+[Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+[EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+Setup of editor config, eslint and prettier is described [here(part 1)](https://blog.theodo.com/2019/08/why-you-should-use-eslint-prettier-and-editorconfig-together/) and [here(part 2)](https://blog.theodo.com/2019/08/empower-your-dev-environment-with-eslint-prettier-and-editorconfig-with-no-conflicts/)
+The following files were added
+
+`.editorconfig`
+
+# http://editorconfig.org
+
+root = true
+
+[*.{html,css,scss,js,jsx,ts,tsx,json}]
+end_of_line = lf
+charset = utf-8
+indent_style = space
+indent_size = 2
+tab_width = 2
+max_line_length = 100
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.md]
+max_line_length = 0
+trim_trailing_whitespace = false
+
+[COMMIT_EDITMSG]
+max_line_length = 0
+
+`package.json`
+{
+...,
+devDependencies: {
+...,
+"@typescript-eslint/eslint-plugin": "^4.4.1",
+"@typescript-eslint/parser": "^4.4.1",
+"eslint": "^7.12.0",
+"eslint-config-prettier": "^6.12.0",
+"eslint-plugin-prettier": "^3.1.4"
+}
+...
+}
+
+`.eslintrc.json`
+{
+"parser": "@typescript-eslint/parser",
+"extends": [
+"plugin:@typescript-eslint/recommended",
+"eslint:recommended",
+"prettier",
+"prettier/@typescript-eslint"
+],
+"env": {
+"es6": true,
+"node": true
+},
+"rules": {
+"prettier/prettier": "error",
+"no-console": "error",
+"@typescript-eslint/no-explicit-any": "off",
+"array-callback-return": "error",
+"block-scoped-var": "error",
+"semi": "error",
+"@typescript-eslint/no-inferrable-types": "off",
+"@typescript-eslint/no-empty-interface": "off"
+},
+"plugins": [
+"prettier"
+]
+}
+
+`.prettierrc`
+{
+"semi": true,
+"singleQuote": true,
+"quoteProps": "consistent",
+"jsxSingleQuote": false,
+"trailingComma": "es5",
+"bracketSpacing": false,
+"arrowParens": "always"
+}
+
+<br />
+<br />
