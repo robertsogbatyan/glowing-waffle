@@ -1,49 +1,86 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
+import {Provider, useDispatch, useSelector} from 'react-redux';
 import './App.css';
-import {UserClient} from './clients';
-import {TUserDTO} from './data-structures';
+import {ThemeProvider, useSetTheme, useTheme} from './context';
+import {SortOrder, Theme} from './data-structures';
 import logo from './logo.svg';
+import {
+  AppDispatch,
+  getUsers,
+  selectUsers,
+  setUsersPage,
+  setUsersSearchTerm,
+  setUsersSortBy,
+  setUsersSortOrder,
+  store,
+} from './store';
 
 const App: React.FC = () => {
-  const [userNames, setUserNames] = useState<string[]>([]);
+  return (
+    <ThemeProvider>
+      <Provider store={store}>
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <p>
+              Edit <code>src/App.tsx</code> and save to reload.
+            </p>
+            <ThemeSwitcher />
+            <Users />
+            <a
+              className="App-link"
+              href="https://reactjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Learn React
+            </a>
+          </header>
+        </div>
+      </Provider>
+    </ThemeProvider>
+  );
+};
 
-  useEffect(() => {
-    (async () => {
-      await UserClient.create({
-        name: 'Foo',
-        email: 'foo@bar.com',
-        address: {
-          city: 'Gwenborough',
-          street: 'Kulas Light',
-          suite: 'Apt. 556',
-        },
-      });
-      const users: TUserDTO[] = await UserClient.getAll();
-      const userNames = users.map((u) => u.name);
+const ThemeSwitcher: React.FC = () => {
+  const theme = useTheme();
+  const setTheme = useSetTheme();
 
-      setUserNames(userNames);
-    })();
-  }, []);
+  const onLightThemeClick = () => {
+    setTheme(Theme.LIGHT);
+  };
+
+  const onDarkThemeClick = () => {
+    setTheme(Theme.DARK);
+  };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <pre>{userNames.join('\n')}</pre>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div>Theme: {theme}</div>
+      <div>
+        <button onClick={onLightThemeClick}>Switch to light theme</button>
+        <button onClick={onDarkThemeClick}>Switch to dark theme</button>
+      </div>
     </div>
   );
+};
+
+const Users: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const users = useSelector(selectUsers);
+
+  const userNames: string[] = users?.map((u) => u.name) || [];
+
+  useEffect(() => {
+    dispatch(setUsersPage(1));
+    dispatch(setUsersSearchTerm('ad'));
+    dispatch(setUsersSortBy('name'));
+    dispatch(setUsersSortOrder(SortOrder.ASC));
+    dispatch(getUsers());
+  }, []);
+
+  return <pre>{userNames.join('\n')}</pre>;
 };
 
 export default App;

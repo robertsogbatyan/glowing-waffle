@@ -1,14 +1,14 @@
 type TUserDTO = {
-  id: number;
+  id: string;
+  dateOfCreation: string;
   name: string;
+  avatar: string;
   email: string;
   dateOfBirth?: string;
-  address?: {
+  address: {
     city: string;
-    street?: string;
-    suite?: string;
+    street: string;
   };
-  picture?: string;
 };
 
 type TNewUserDTO = Omit<TUserDTO, 'id'>;

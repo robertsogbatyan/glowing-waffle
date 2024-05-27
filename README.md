@@ -57,6 +57,11 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 Clients are configured for a scenario when most of the APIs have the same interfaces(mainly CRUD) and also need similar manipulations(e.g. Authorization header) in interceptors. So we can create fully functional client by just extending one of the base clients and just passing the API url and add additional functionality if needed.
 
+## State management
+
+For global state management Context API was used as there's mainly simple read/write operations needed.
+For server state management Redux(Toolkit) was used as we can separate the data manipulation logic in the reducers. Personally, I find it easier to read and debug code with the one-way data flow provided by Redux.
+
 ## Consistency in code style
 
 VSCode Extensions
