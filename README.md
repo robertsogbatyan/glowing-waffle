@@ -31,9 +31,13 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### `npm run eject`
 
-### `npm test`
+### `npm run prettify`
 
 Format all files according to consistency rules described below
+
+### `npm run storybook`
+
+Run Storybook with shared components
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
@@ -61,6 +65,10 @@ Clients are configured for a scenario when most of the APIs have the same interf
 
 For global state management Context API was used as there's mainly simple read/write operations needed.
 For server state management Redux(Toolkit) was used as we can separate the data manipulation logic in the reducers. Personally, I find it easier to read and debug code with the one-way data flow provided by Redux.
+
+## Shared components
+
+Standard components with no domain logic are added to shared components directory. Storybook is integrated so it's easier to develop them in an isolated environment and later move to separate UI components module.
 
 ## Consistency in code style
 
