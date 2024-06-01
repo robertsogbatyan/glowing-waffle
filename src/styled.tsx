@@ -76,4 +76,8 @@ textarea:not([rows]) {
 }
 `;
 
-export {StyledReset};
+const GlobalStyles = createGlobalStyle`
+font-family: serif;
+`;
+
+export {GlobalStyles, StyledReset};

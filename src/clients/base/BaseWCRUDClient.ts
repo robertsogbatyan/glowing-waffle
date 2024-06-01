@@ -3,7 +3,7 @@ import {BaseWAuthClient} from './BaseWAuthClient';
 
 type TListDTO<TDTO> = {
   data: TDTO[];
-  totalPages: number;
+  totalCount: number;
 };
 
 function BaseWCRUDClient<TDTO, TNewDTO>() {
@@ -25,15 +25,11 @@ function BaseWCRUDClient<TDTO, TNewDTO>() {
       const response = await this.axiosInstance.get('/', {
         params: queryParams,
       });
-      const {data, totalCount} = response.data;
 
-      return {
-        data,
-        totalPages: itemsPerPage ? Math.ceil(totalCount / itemsPerPage) : 1,
-      };
+      return response.data;
     }
 
-    static async get(id: number): Promise<TDTO> {
+    static async get(id: string): Promise<TDTO> {
       const response = await this.axiosInstance.get(`/${id}`);
 
       return response.data;
@@ -51,7 +47,7 @@ function BaseWCRUDClient<TDTO, TNewDTO>() {
       return response.data;
     }
 
-    static async delete(id: number): Promise<number> {
+    static async delete(id: string): Promise<string> {
       await this.axiosInstance.delete(`/${id}`);
 
       return id;

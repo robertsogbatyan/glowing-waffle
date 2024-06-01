@@ -5,6 +5,7 @@ type TSelectProps = {
   options: TSelectOption[];
   value?: string;
   onChange?: (value: string, event: ChangeEvent<HTMLSelectElement>) => void;
+  placeholder?: string;
 };
 
 type TSelectOption = {
@@ -12,7 +13,7 @@ type TSelectOption = {
   label?: string;
 };
 
-const Select: React.FC<TSelectProps> = ({options, value, onChange}) => {
+const Select: React.FC<TSelectProps> = ({options, value, onChange, placeholder}) => {
   const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value: string = event.target.value as string;
 
@@ -21,6 +22,12 @@ const Select: React.FC<TSelectProps> = ({options, value, onChange}) => {
 
   return (
     <StyledSelect value={value} onChange={onSelectChange}>
+      {placeholder && (
+        // If there's a possibility that an option value can be the key of placeholder, we can generate it with useId
+        <option key={'_placeholder'} value={undefined} hidden disabled>
+          {placeholder}
+        </option>
+      )}
       {options.map((o) => (
         <option key={o.value} value={o.value}>
           {o.label || o.value}
@@ -30,4 +37,4 @@ const Select: React.FC<TSelectProps> = ({options, value, onChange}) => {
   );
 };
 
-export {Select};
+export {Select, type TSelectOption};

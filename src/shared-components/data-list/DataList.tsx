@@ -1,9 +1,9 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, ReactNode} from 'react';
 import {StyledDataList} from './styled';
 
 type TDataListEntry = {
   term: string;
-  description: string;
+  description: ReactNode;
 };
 
 type TDataListProps = {
