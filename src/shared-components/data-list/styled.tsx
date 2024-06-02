@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {deviseSizes} from '../../config';
 
 const StyledDataList = styled.dl`
   > dt {
@@ -19,6 +20,22 @@ const StyledDataList = styled.dl`
     font-size: 1.2em;
     word-break: break-all;
     vertical-align: top;
+  }
+
+  @media (max-width: ${deviseSizes.tablet}) {
+    > dt {
+      display: block;
+      margin: 0;
+
+      &:not(:first-child) {
+        margin-top: 1.2em;
+      }
+    }
+
+    > dd {
+      display: block;
+      margin: 0;
+    }
   }
 `;
 

@@ -16,6 +16,9 @@ const meta = {
     value: {
       control: 'text',
     },
+    placeholder: {
+      control: 'text',
+    },
   },
   args: {
     onChange: fn(),

@@ -9,3 +9,4 @@ export * from './loading-spinner';
 export * from './pagination';
 export * from './search-input';
 export * from './select';
+export * from './table';

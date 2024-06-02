@@ -9,6 +9,7 @@ const StyledWrapper = styled.span<TStyledWrapperProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  height: auto;
   border-radius: 50%;
   background-color: #ddd;
   overflow: hidden;
@@ -18,13 +19,11 @@ const StyledWrapper = styled.span<TStyledWrapperProps>`
       case 'sm':
         return css`
           width: 3em;
-          height: 3em;
         `;
 
       case 'lg':
         return css`
           width: 10em;
-          height: 10em;
         `;
     }
   }}

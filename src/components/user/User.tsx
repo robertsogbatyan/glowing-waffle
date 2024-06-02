@@ -18,12 +18,17 @@ import {
   selectUserLoading,
 } from '../../store';
 import {Utils} from '../../utils';
+import {
+  StyledAvatarContainer,
+  StyledBackButtonContainer,
+  StyledDataListContainer,
+  StyledWrapper,
+} from './styled';
 
 type TUserProps = {
   id: string | undefined;
 };
 
-// TODO: styles
 const User: React.FC<TUserProps> = ({id}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -84,18 +89,21 @@ const User: React.FC<TUserProps> = ({id}) => {
   };
 
   return (
-    <div>
-      <div>
-        <Button onClick={goBack}>Back</Button>
-      </div>
-      <div>
-        <Avatar src={user.avatar} title={user.name} />
-      </div>
+    <StyledWrapper>
+      <StyledBackButtonContainer>
+        <Button type={'secondary'} onClick={goBack}>
+          {'<'}
+        </Button>
+      </StyledBackButtonContainer>
 
-      <div>
+      <StyledAvatarContainer>
+        <Avatar src={user.avatar} title={user.name} />
+      </StyledAvatarContainer>
+
+      <StyledDataListContainer>
         <DataList entries={dataListEntries} />
-      </div>
-    </div>
+      </StyledDataListContainer>
+    </StyledWrapper>
   );
 };
 

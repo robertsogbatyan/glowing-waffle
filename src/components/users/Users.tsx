@@ -1,19 +1,20 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
+import {TUserDTO} from '../../data-structures';
 import {
   Button,
   ErrorScreen,
   Input,
-  LoadingScreen,
   Pagination,
   Select,
   TSelectOption,
+  Table,
 } from '../../shared-components';
 import {
   AppDispatch,
   getUsers,
-  selectUserIds,
+  selectUsers,
   selectUsersError,
   selectUsersLoading,
   selectUsersTotalPages,
@@ -22,7 +23,8 @@ import {
   setUsersSortBy,
   setUsersSortOrder,
 } from '../../store';
-import {UserRow} from '../user-row';
+import {Utils} from '../../utils';
+import {StyledFilters, StyledPaginationWrapper, StyledTableWrapper, StyledWrapper} from './styled';
 
 const sortingOptions: TSelectOption[] = [
   {
@@ -53,8 +55,6 @@ type TUsersProps = {
   setSorting: (sortBy: string, sortOrder: string) => void;
 };
 
-// TODO: styles
-// TODO: shared component for table
 const Users: React.FC<TUsersProps> = ({
   page,
   setPage,
@@ -66,7 +66,7 @@ const Users: React.FC<TUsersProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const userIds: string[] = useSelector(selectUserIds) || [];
+  const users: TUserDTO[] = useSelector(selectUsers);
   const usersTotalPages: number = useSelector(selectUsersTotalPages) || 1;
   const isLoading: boolean = useSelector(selectUsersLoading);
   const error: string | undefined = useSelector(selectUsersError);
@@ -93,6 +93,39 @@ const Users: React.FC<TUsersProps> = ({
     );
   }
 
+  const usersTableColumns = [
+    {
+      name: 'name',
+      label: 'Name',
+      width: '40%',
+      render: (
+        _value: unknown,
+        _name: string,
+        user: {id: string | number} & Record<string, unknown>
+      ) => <Link to={`/users/${user.id}`}>{(user as TUserDTO).name}</Link>,
+    },
+    {
+      name: 'email',
+      label: 'Email',
+      width: '40%',
+    },
+    {
+      name: 'age',
+      label: 'Age',
+      width: '10%',
+      render: (
+        _value: unknown,
+        _name: string,
+        user: {id: string | number} & Record<string, unknown>
+      ) => Utils.getAge((user as TUserDTO).dateOfBirth || ''),
+    },
+    {
+      name: 'actions',
+      label: '',
+      width: '10%',
+    },
+  ];
+
   const onSortingChange = (sorting: string): void => {
     const [sortBy, sortOrder] = sorting.split('-');
 
@@ -100,35 +133,24 @@ const Users: React.FC<TUsersProps> = ({
   };
 
   return (
-    <div>
-      <div>
-        <Input value={searchTerm} onChange={setSearchTerm} />
+    <StyledWrapper>
+      <StyledFilters>
+        <Input value={searchTerm} onChange={setSearchTerm} placeholder={'Search...'} />
         <Select
           value={`${sortBy}-${sortOrder}`}
           options={sortingOptions}
           onChange={onSortingChange}
         />
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Age</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {userIds.map((id) => (
-            <UserRow key={id} id={id} />
-          ))}
-        </tbody>
-      </table>
+      </StyledFilters>
 
-      {isLoading && <LoadingScreen />}
+      <StyledTableWrapper>
+        <Table columns={usersTableColumns} data={users} isLoading={isLoading} />
+      </StyledTableWrapper>
 
-      <Pagination currentPage={page} onPageChange={setPage} totalPages={usersTotalPages} />
-    </div>
+      <StyledPaginationWrapper>
+        <Pagination currentPage={page} onPageChange={setPage} totalPages={usersTotalPages} />
+      </StyledPaginationWrapper>
+    </StyledWrapper>
   );
 };
 

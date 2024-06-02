@@ -1,4 +1,4 @@
-import React, {createRef, useEffect, useRef} from 'react';
+import React, {RefObject, createRef, useEffect, useRef} from 'react';
 import {useLocation, useOutlet} from 'react-router';
 import {CSSTransition, SwitchTransition} from 'react-transition-group';
 import {StyledHeaderWrapper, StyledLayout, StyledMain, StyledPage} from './styled';
@@ -7,7 +7,7 @@ const Layout: React.FC = () => {
   const location = useLocation();
   const currentOutlet = useOutlet();
 
-  const nodeRefMap = useRef<Map<string, React.RefObject<HTMLDivElement>>>(new Map());
+  const nodeRefMap = useRef<Map<string, RefObject<HTMLDivElement>>>(new Map());
   const nodeRef = nodeRefMap?.current.get(location.pathname);
 
   useEffect(() => {

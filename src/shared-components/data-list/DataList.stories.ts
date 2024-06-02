@@ -6,9 +6,7 @@ const meta = {
   component: DataList,
   parameters: {
     layout: 'centered',
-    controls: {
-      exclude: 'onClick',
-    },
+    controls: {},
   },
   tags: ['autodocs'],
   argTypes: {},
