@@ -3,7 +3,7 @@ import {StyledInput} from './styled';
 
 type TInputProps = {
   value?: string;
-  onChange?: (value: string, event: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (value: string | undefined, event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
 };
 
@@ -19,4 +19,4 @@ const Input: React.FC<TInputProps> = ({value, onChange, placeholder}) => {
   );
 };
 
-export {Input};
+export {Input, type TInputProps};

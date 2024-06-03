@@ -47,7 +47,13 @@ const Pagination: React.FC<TPaginationProps> = ({currentPage, totalPages, onPage
 
   return (
     <StyledWrapper>
-      <Button type={'primary'} size={'sm'} onClick={onFirstPageClick} disabled={page === 1}>
+      <Button
+        className={'hidden-phone'}
+        type={'primary'}
+        size={'sm'}
+        onClick={onFirstPageClick}
+        disabled={page === 1}
+      >
         {'<<'}
       </Button>
       <Button type={'primary'} size={'sm'} onClick={onPrevPageClick} disabled={page === 1}>
@@ -59,7 +65,13 @@ const Pagination: React.FC<TPaginationProps> = ({currentPage, totalPages, onPage
       <Button type={'primary'} size={'sm'} onClick={onNextPageClick} disabled={page === totalPages}>
         {'>'}
       </Button>
-      <Button type={'primary'} size={'sm'} onClick={onLastPageClick} disabled={page === totalPages}>
+      <Button
+        className={'hidden-phone'}
+        type={'primary'}
+        size={'sm'}
+        onClick={onLastPageClick}
+        disabled={page === totalPages}
+      >
         {'>>'}
       </Button>
     </StyledWrapper>

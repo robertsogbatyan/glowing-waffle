@@ -1,4 +1,4 @@
-import React, {Fragment, ReactNode} from 'react';
+import React, {Fragment, ReactNode, memo} from 'react';
 import {StyledErrorScreen, StyledLoadingScreen, StyledTH, StyledTable} from './styled';
 
 type TTableProps = {
@@ -19,7 +19,7 @@ type TTableColumn = {
 };
 
 // TODO: add onRowClick prop
-const Table: React.FC<TTableProps> = ({columns, data, isLoading}) => {
+const Table: React.FC<TTableProps> = memo(({columns, data, isLoading}) => {
   return (
     <Fragment>
       <StyledTable>
@@ -33,7 +33,7 @@ const Table: React.FC<TTableProps> = ({columns, data, isLoading}) => {
           </tr>
         </thead>
 
-        {!isLoading && data?.length && (
+        {!isLoading && !!data?.length && (
           <tbody>
             {data?.map((item) => (
               <tr key={item.id}>
@@ -56,6 +56,6 @@ const Table: React.FC<TTableProps> = ({columns, data, isLoading}) => {
       {!isLoading && !data?.length && <StyledErrorScreen message={'No Data'} />}
     </Fragment>
   );
-};
+});
 
 export {Table, type TTableColumn};

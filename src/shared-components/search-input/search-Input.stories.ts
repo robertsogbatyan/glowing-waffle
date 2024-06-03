@@ -8,7 +8,7 @@ const meta = {
   parameters: {
     layout: 'centered',
     controls: {
-      exclude: ['onChange', 'onSettled'],
+      exclude: ['onChange'],
     },
   },
   tags: ['autodocs'],
@@ -19,7 +19,6 @@ const meta = {
   },
   args: {
     onChange: fn(),
-    onSettled: fn(),
   },
 } satisfies Meta<typeof SearchInput>;
 

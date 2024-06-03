@@ -22,11 +22,24 @@ function BaseWCRUDClient<TDTO, TNewDTO>() {
         sortBy,
         order: sortOrder,
       };
-      const response = await this.axiosInstance.get('/', {
-        params: queryParams,
-      });
 
-      return response.data;
+      let data: TListDTO<TDTO>;
+
+      // To avoid throwing error if there are no results matching the search
+      try {
+        const response = await this.axiosInstance.get('/', {
+          params: queryParams,
+        });
+
+        data = response.data;
+      } catch (e) {
+        data = {
+          data: [],
+          totalCount: 0,
+        };
+      }
+
+      return data;
     }
 
     static async get(id: string): Promise<TDTO> {

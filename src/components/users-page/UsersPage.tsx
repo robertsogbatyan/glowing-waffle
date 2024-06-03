@@ -19,7 +19,9 @@ const UsersPage: React.FC = () => {
     });
   };
 
-  const setSearchTerm = (searchTerm: string) => {
+  const setSearchTerm = (searchTerm: string | undefined) => {
+    console.log(searchTerm);
+
     setSearchParams((searchParams: URLSearchParams) => {
       const newSearchParams: URLSearchParams = new URLSearchParams(searchParams);
 
@@ -32,13 +34,13 @@ const UsersPage: React.FC = () => {
     });
   };
 
-  const setSorting = (sortBy: string, sortOrder: string) => {
+  const setSorting = (sortBy: string | undefined, sortOrder: string | undefined) => {
     setSearchParams((searchParams: URLSearchParams) => {
       const newSearchParams: URLSearchParams = new URLSearchParams(searchParams);
 
       newSearchParams.set('page', '1');
-      newSearchParams.set('sortBy', sortBy);
-      newSearchParams.set('sortOrder', sortOrder);
+      sortBy ? newSearchParams.set('sortBy', sortBy) : newSearchParams.delete('sortBy');
+      sortOrder ? newSearchParams.set('sortOrder', sortOrder) : newSearchParams.delete('sortOrder');
 
       return newSearchParams;
     });

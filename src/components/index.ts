@@ -4,6 +4,5 @@ export * from './layout';
 export * from './router';
 export * from './user';
 export * from './user-page';
-export * from './user-row';
 export * from './users';
 export * from './users-page';

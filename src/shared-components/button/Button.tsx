@@ -11,6 +11,7 @@ type TButtonProps = {
   href?: string;
   disabled?: boolean;
   children: ReactNode;
+  className?: string;
 };
 
 const Button: React.FC<TButtonProps> = ({
@@ -20,10 +21,12 @@ const Button: React.FC<TButtonProps> = ({
   href,
   disabled = false,
   children,
+  className,
 }) => {
   return (
     <StyledButton
       as={href ? 'a' : 'button'}
+      className={className}
       {...(href ? {href} : {type: 'button'})}
       onClick={onClick}
       type={type}

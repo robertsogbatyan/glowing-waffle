@@ -6,6 +6,7 @@ const StyledTable = styled.table`
   table-layout: fixed;
   width: 100%;
   border-collapse: collapse;
+  word-break: break-all;
   text-align: left;
 
   thead {

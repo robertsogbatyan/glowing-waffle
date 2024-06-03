@@ -1,4 +1,5 @@
 import {createGlobalStyle} from 'styled-components';
+import {deviseSizes} from './config';
 
 const StyledReset = createGlobalStyle`
   /* Box sizing rules */
@@ -77,7 +78,28 @@ textarea:not([rows]) {
 `;
 
 const GlobalStyles = createGlobalStyle`
-font-family: serif;
+body {
+  font-family: serif;
+}
+
+/* TODO: introduce responsive grid system and utility classes */
+@media (max-width: ${deviseSizes.desktop}) {
+  .hidden-desktop {
+    display: none;
+  }
+}
+
+@media (max-width: ${deviseSizes.tablet}) {
+  .hidden-tablet {
+    display: none;
+  }
+}
+
+@media (max-width: ${deviseSizes.phone}) {
+  .hidden-phone {
+    display: none;
+  }
+}
 `;
 
 export {GlobalStyles, StyledReset};

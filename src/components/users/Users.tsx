@@ -1,12 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {TUserDTO} from '../../data-structures';
 import {
   Button,
   ErrorScreen,
-  Input,
   Pagination,
+  SearchInput,
   Select,
   TSelectOption,
   Table,
@@ -48,11 +48,11 @@ const sortingOptions: TSelectOption[] = [
 type TUsersProps = {
   page: number;
   setPage: (page: number) => void;
-  searchTerm: string;
-  setSearchTerm: (searchTerm: string) => void;
-  sortBy: string;
-  sortOrder: string;
-  setSorting: (sortBy: string, sortOrder: string) => void;
+  searchTerm: string | undefined;
+  setSearchTerm: (searchTerm: string | undefined) => void;
+  sortBy: string | undefined;
+  sortOrder: string | undefined;
+  setSorting: (sortBy: string | undefined, sortOrder: string | undefined) => void;
 };
 
 const Users: React.FC<TUsersProps> = ({
@@ -93,38 +93,41 @@ const Users: React.FC<TUsersProps> = ({
     );
   }
 
-  const usersTableColumns = [
-    {
-      name: 'name',
-      label: 'Name',
-      width: '40%',
-      render: (
-        _value: unknown,
-        _name: string,
-        user: {id: string | number} & Record<string, unknown>
-      ) => <Link to={`/users/${user.id}`}>{(user as TUserDTO).name}</Link>,
-    },
-    {
-      name: 'email',
-      label: 'Email',
-      width: '40%',
-    },
-    {
-      name: 'age',
-      label: 'Age',
-      width: '10%',
-      render: (
-        _value: unknown,
-        _name: string,
-        user: {id: string | number} & Record<string, unknown>
-      ) => Utils.getAge((user as TUserDTO).dateOfBirth || ''),
-    },
-    {
-      name: 'actions',
-      label: '',
-      width: '10%',
-    },
-  ];
+  const usersTableColumns = useMemo(
+    () => [
+      {
+        name: 'name',
+        label: 'Name',
+        width: '30%',
+        render: (
+          _value: unknown,
+          _name: string,
+          user: {id: string | number} & Record<string, unknown>
+        ) => <Link to={`/users/${user.id}`}>{(user as TUserDTO).name}</Link>,
+      },
+      {
+        name: 'email',
+        label: 'Email',
+        width: '30%',
+      },
+      {
+        name: 'age',
+        label: 'Age',
+        width: '20%',
+        render: (
+          _value: unknown,
+          _name: string,
+          user: {id: string | number} & Record<string, unknown>
+        ) => Utils.getAge((user as TUserDTO).dateOfBirth || ''),
+      },
+      {
+        name: 'actions',
+        label: '',
+        width: '20%',
+      },
+    ],
+    []
+  );
 
   const onSortingChange = (sorting: string): void => {
     const [sortBy, sortOrder] = sorting.split('-');
@@ -135,7 +138,7 @@ const Users: React.FC<TUsersProps> = ({
   return (
     <StyledWrapper>
       <StyledFilters>
-        <Input value={searchTerm} onChange={setSearchTerm} placeholder={'Search...'} />
+        <SearchInput value={searchTerm} onChange={setSearchTerm} />
         <Select
           value={`${sortBy}-${sortOrder}`}
           options={sortingOptions}

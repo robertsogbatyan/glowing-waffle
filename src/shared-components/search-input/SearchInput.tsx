@@ -1,43 +1,61 @@
-import React, {ChangeEvent, useEffect, useRef} from 'react';
-import {Input} from '../input';
+import React, {useEffect, useRef, useState} from 'react';
+import {Input, TInputProps} from '../input';
 
-type TSearchInputProps = {
-  value?: string;
-  onChange?: (value: string, event: ChangeEvent<HTMLInputElement>) => void;
-  onSettled?: (value: string, event: ChangeEvent<HTMLInputElement>) => void;
+type TSearchInputProps = TInputProps & {
+  onChange?: (value: string | undefined) => void;
 };
 
 const SETTLED_TIME: number = 500;
 
-const SearchInput: React.FC<TSearchInputProps> = ({value, onChange, onSettled}) => {
-  const timeoutHandle = useRef<ReturnType<typeof setTimeout> | undefined>();
+const SearchInput: React.FC<TSearchInputProps> = ({
+  value,
+  onChange,
+  placeholder = 'Search...',
+  ...props
+}) => {
+  const onChangeRef = useRef<typeof onChange>();
+  const timeoutHandleRef = useRef<ReturnType<typeof setTimeout> | undefined>();
+
+  const [innerValue, setInnerValue] = useState<string | undefined>(value);
+
+  useEffect(() => {
+    if (!timeoutHandleRef.current) {
+      setInnerValue(value);
+    }
+  }, [value]);
+
+  useEffect(() => {
+    onChangeRef.current = onChange;
+
+    return () => {
+      onChangeRef.current = undefined;
+    };
+  }, [onChange]);
 
   useEffect(() => {
     return () => {
-      if (timeoutHandle.current) {
-        clearTimeout(timeoutHandle.current);
-        timeoutHandle.current = undefined;
+      if (timeoutHandleRef.current) {
+        clearTimeout(timeoutHandleRef.current);
+        timeoutHandleRef.current = undefined;
       }
     };
   }, []);
 
-  const onInputChange = (value: string, event: ChangeEvent<HTMLInputElement>) => {
-    if (timeoutHandle.current) {
-      clearTimeout(timeoutHandle.current);
-      timeoutHandle.current = undefined;
+  const onInputChange = (value: string | undefined): void => {
+    if (timeoutHandleRef.current) {
+      clearTimeout(timeoutHandleRef.current);
+      timeoutHandleRef.current = undefined;
     }
 
-    onChange?.(value, event);
+    setInnerValue(value);
 
-    if (onSettled) {
-      timeoutHandle.current = setTimeout(() => {
-        onSettled(value, event);
-        timeoutHandle.current = undefined;
-      }, SETTLED_TIME);
-    }
+    timeoutHandleRef.current = setTimeout(() => {
+      onChangeRef.current?.(value);
+      timeoutHandleRef.current = undefined;
+    }, SETTLED_TIME);
   };
 
-  return <Input value={value} onChange={onInputChange} />;
+  return <Input value={innerValue} onChange={onInputChange} placeholder={placeholder} {...props} />;
 };
 
 export {SearchInput};
