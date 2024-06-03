@@ -66,7 +66,7 @@ const Users: React.FC<TUsersProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const users: TUserDTO[] = useSelector(selectUsers);
+  const users: TUserDTO[] | undefined = useSelector(selectUsers);
   const usersTotalPages: number = useSelector(selectUsersTotalPages) || 1;
   const isLoading: boolean = useSelector(selectUsersLoading);
   const error: string | undefined = useSelector(selectUsersError);

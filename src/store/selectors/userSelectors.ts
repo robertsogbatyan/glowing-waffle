@@ -6,13 +6,15 @@ import {RootState} from '../store';
 const usersAdapter = createEntityAdapter<TUserDTO>();
 const usersSelectors = usersAdapter.getSelectors<RootState>((state) => state.user);
 
-const selectUsers = (state: RootState): TUserDTO[] => {
+const selectUsers = (state: RootState): TUserDTO[] | undefined => {
   const {page, searchTerm, sortBy, sortOrder} = state.user;
   const cacheKey: string = `${searchTerm}-${sortBy}-${sortOrder}`;
   const cachedData: {pageIdsMap: Record<number, string[]>; totalCount: number} | undefined =
     state.user.cache[cacheKey];
-  const currentPageUserIds: string[] = cachedData?.pageIdsMap[page] || [];
-  const users: TUserDTO[] = currentPageUserIds.map((id) => selectUserById(id)(state) as TUserDTO);
+  const currentPageUserIds: string[] | undefined = cachedData?.pageIdsMap[page];
+  const users: TUserDTO[] | undefined = currentPageUserIds?.map(
+    (id) => selectUserById(id)(state) as TUserDTO
+  );
 
   return users;
 };
